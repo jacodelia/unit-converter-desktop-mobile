@@ -1,0 +1,115 @@
+[project]
+name = "unitconverter-mobile"
+version = "1.0.0"
+description = "Mobile Unit Converter application with PySide6 (Qt) for Android and iOS"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "PySide6>=6.6.0",
+]
+
+[project.scripts]
+unitconverter-mobile = "main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-v --tb=short"
+
+[tool.pyinstaller]
+# PyInstaller configuration for desktop binary builds
+name = "UnitConverter-Mobile"
+onefile = true
+windowed = true
+icon = "src/assets/icon.ico"
+
+# ──────────────────────────────────────────────────────────
+# Briefcase (BeeWare) configuration for mobile builds
+# ──────────────────────────────────────────────────────────
+
+[tool.briefcase]
+project_name = "UnitConverter"
+bundle = "com.unitconverter"
+version = "1.0.0"
+url = "https://github.com/unitconverter/mobile"
+license.file = "LICENSE"
+author = "Unit Converter Team"
+author_email = "dev@unitconverter.app"
+
+[tool.briefcase.app.unitconverter]
+formal_name = "Unit Converter"
+description = "A mobile unit converter for Android and iOS"
+long_description = "A comprehensive unit converter supporting Length, Temperature, Area, Volume, Weight, and Time conversions with 57 units, 8 languages, and natural language search."
+icon = "src/assets/icon"
+sources = ["src", "main.py"]
+requires = [
+    "PySide6>=6.6.0",
+]
+
+# ── Android (APK / AAB) ──────────────────────────────────
+
+[tool.briefcase.app.unitconverter.android]
+requires = [
+    "pyside6-android>=6.6.0",
+]
+# Target both phone and tablet form factors
+supported_platforms = ["phone", "tablet"]
+
+[tool.briefcase.app.unitconverter.android.phone]
+# Android phone specific settings
+target_sdk = 34
+min_sdk = 26
+build_tools_version = "34.0.0"
+output_format = "apk"
+orientation = "portrait"
+# Permissions (none required for unit converter)
+permissions = []
+
+[tool.briefcase.app.unitconverter.android.tablet]
+# Android tablet specific settings
+target_sdk = 34
+min_sdk = 26
+build_tools_version = "34.0.0"
+output_format = "apk"
+orientation = "any"
+permissions = []
+
+# ── iOS (iPhone / iPad) ──────────────────────────────────
+
+[tool.briefcase.app.unitconverter.iOS]
+requires = [
+    "pyside6-ios>=6.6.0",
+]
+# Target both iPhone and iPad
+supported_platforms = ["iphone", "ipad"]
+
+[tool.briefcase.app.unitconverter.iOS.iphone]
+# iPhone specific settings
+deployment_target = "15.0"
+orientation = "portrait"
+supported_device_families = [1]  # 1 = iPhone
+
+[tool.briefcase.app.unitconverter.iOS.ipad]
+# iPad specific settings
+deployment_target = "15.0"
+orientation = "any"
+supported_device_families = [2]  # 2 = iPad
+supports_multitasking = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-qt>=4.3.0",
+    "selenium>=4.15.0",
+    "pyinstaller>=6.0.0",
+    "briefcase>=0.3.17",
+]
