@@ -7,12 +7,12 @@ mobile-specific behavior.
 
 import pytest
 
-from src.services.converter_service import ConverterService
-from src.services.search_service import SearchService
-from src.i18n.translations import TranslationService
-from src.viewmodels.converter_viewmodel import ConverterViewModel
-from src.viewmodels.search_viewmodel import SearchViewModel
-from src.viewmodels.preferences_viewmodel import PreferencesViewModel
+from unitconverter.services.converter_service import ConverterService
+from unitconverter.services.search_service import SearchService
+from unitconverter.i18n.translations import TranslationService
+from unitconverter.viewmodels.converter_viewmodel import ConverterViewModel
+from unitconverter.viewmodels.search_viewmodel import SearchViewModel
+from unitconverter.viewmodels.preferences_viewmodel import PreferencesViewModel
 
 
 @pytest.fixture
@@ -130,7 +130,7 @@ class TestE2EMobileLanguage:
 
     def test_switch_to_all_languages(self, app_stack) -> None:
         prefs = app_stack["prefs_vm"]
-        from src.i18n.translations import SUPPORTED_LANGUAGES, APP_TITLE
+        from unitconverter.i18n.translations import SUPPORTED_LANGUAGES, APP_TITLE
 
         for lang in SUPPORTED_LANGUAGES:
             prefs.set_language(lang)
@@ -139,14 +139,14 @@ class TestE2EMobileLanguage:
 
     def test_chinese_language(self, app_stack) -> None:
         prefs = app_stack["prefs_vm"]
-        from src.i18n.translations import APP_TITLE
+        from unitconverter.i18n.translations import APP_TITLE
 
         prefs.set_language("zh")
         assert prefs.get_text(APP_TITLE) == "单位转换器"
 
     def test_russian_language(self, app_stack) -> None:
         prefs = app_stack["prefs_vm"]
-        from src.i18n.translations import APP_TITLE
+        from unitconverter.i18n.translations import APP_TITLE
 
         prefs.set_language("ru")
         assert prefs.get_text(APP_TITLE) == "Конвертер Единиц"

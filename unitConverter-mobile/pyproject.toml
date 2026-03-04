@@ -1,11 +1,14 @@
 [project]
 name = "unitconverter-mobile"
 version = "1.0.0"
-description = "Mobile Unit Converter application with PySide6 (Qt) for Android and iOS"
+description = "Mobile Unit Converter application with PySide6 (desktop) and Toga (Android/iOS)"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
-dependencies = [
+dependencies = []
+
+[project.optional-dependencies]
+desktop = [
     "PySide6>=6.6.0",
 ]
 
@@ -22,7 +25,7 @@ addopts = "-v --tb=short"
 name = "UnitConverter-Mobile"
 onefile = true
 windowed = true
-icon = "src/assets/icon.ico"
+icon = "unitconverter/assets/icon.ico"
 
 # ──────────────────────────────────────────────────────────
 # Briefcase (BeeWare) configuration for mobile builds
@@ -41,64 +44,67 @@ author_email = "dev@unitconverter.app"
 formal_name = "Unit Converter"
 description = "A mobile unit converter for Android and iOS"
 long_description = "A comprehensive unit converter supporting Length, Temperature, Area, Volume, Weight, and Time conversions with 57 units, 8 languages, and natural language search."
-icon = "src/assets/icon"
-sources = ["src", "main.py"]
-requires = [
-    "PySide6>=6.6.0",
-]
+icon = "unitconverter/assets/icon"
+sources = ["unitconverter", "main.py"]
+requires = []
 
 # ── Android (APK / AAB) ──────────────────────────────────
+# Builds a universal APK that runs on both phone and tablet.
+# Tablet layouts are handled at runtime by DeviceProfile in main.py.
+#
+# Build commands:
+#   briefcase create android    # scaffold Android project
+#   briefcase build android     # compile debug APK
+#   briefcase package android   # produce signed AAB for Play Store
+#   briefcase run android       # deploy to connected device / emulator
 
 [tool.briefcase.app.unitconverter.android]
 requires = [
-    "pyside6-android>=6.6.0",
+    "toga-android>=0.4.0",
 ]
-# Target both phone and tablet form factors
-supported_platforms = ["phone", "tablet"]
-
-[tool.briefcase.app.unitconverter.android.phone]
-# Android phone specific settings
-target_sdk = 34
-min_sdk = 26
+build_gradle_dependencies = [
+    "androidx.appcompat:appcompat:1.6.1",
+    "androidx.constraintlayout:constraintlayout:2.1.4",
+    "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+]
+target_sdk_version = 34
+minimum_sdk_version = 26
 build_tools_version = "34.0.0"
-output_format = "apk"
-orientation = "portrait"
-# Permissions (none required for unit converter)
+# Universal APK: supports both phone and tablet (device families 1 & 2)
+supported_device_families = [1, 2]         # 1 = phone, 2 = tablet
+# Screen orientation: portrait on phone, any on tablet (handled at runtime)
+screen_orientation = "fullUser"
+# Permissions (none required for a unit converter)
 permissions = []
-
-[tool.briefcase.app.unitconverter.android.tablet]
-# Android tablet specific settings
-target_sdk = 34
-min_sdk = 26
-build_tools_version = "34.0.0"
-output_format = "apk"
-orientation = "any"
-permissions = []
+# Build configuration
+output_format = "apk"                       # Change to "aab" for Play Store bundle
+version_code = 1
+splash_background_color = "#0F0C29"
 
 # ── iOS (iPhone / iPad) ──────────────────────────────────
+# Builds a universal iOS app that runs on both iPhone and iPad.
+#
+# Build commands (requires macOS + Xcode):
+#   briefcase create iOS        # scaffold Xcode project
+#   briefcase build iOS         # compile debug build
+#   briefcase package iOS       # produce signed IPA for App Store
+#   briefcase run iOS           # deploy to simulator
+#   briefcase run iOS -d <udid> # deploy to physical device
 
 [tool.briefcase.app.unitconverter.iOS]
 requires = [
-    "pyside6-ios>=6.6.0",
+    "toga-iOS>=0.4.0",
 ]
-# Target both iPhone and iPad
-supported_platforms = ["iphone", "ipad"]
-
-[tool.briefcase.app.unitconverter.iOS.iphone]
-# iPhone specific settings
 deployment_target = "15.0"
-orientation = "portrait"
-supported_device_families = [1]  # 1 = iPhone
-
-[tool.briefcase.app.unitconverter.iOS.ipad]
-# iPad specific settings
-deployment_target = "15.0"
-orientation = "any"
-supported_device_families = [2]  # 2 = iPad
+# Universal app: supports both iPhone and iPad
+supported_device_families = [1, 2]         # 1 = iPhone, 2 = iPad
+# Allow all orientations (phone defaults to portrait via DeviceProfile)
+supported_orientations = ["portrait", "landscape"]
 supports_multitasking = true
+splash_background_color = "#0F0C29"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["unitconverter"]
 
 [build-system]
 requires = ["hatchling"]
@@ -106,6 +112,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "PySide6>=6.6.0",
     "pytest>=8.0.0",
     "pytest-cov>=4.0.0",
     "pytest-qt>=4.3.0",

@@ -19,8 +19,6 @@ unitConverter-desktop/
 ├── main.py                          # Application entry point
 ├── pyproject.toml                   # Project config & dependencies (uv)
 ├── README.md                        # This file
-├── docs/
-│   └── architecture.md              # Mermaid diagrams & build docs
 ├── src/
 │   ├── __init__.py
 │   ├── models/                      # Data models (MVVM - Model)
@@ -79,7 +77,7 @@ This project follows the **MVVM (Model-View-ViewModel)** pattern:
 - **ViewModel**: Qt `QObject` subclasses with `Signal`/`Slot` for reactive data binding
 - **View**: PySide6 widgets that bind to ViewModels via signals
 
-See [docs/architecture.md](docs/architecture.md) for Mermaid diagrams and detailed architecture documentation.
+See [architecture.md](architecture.md) for Mermaid diagrams and detailed architecture documentation.
 
 ## Prerequisites
 
@@ -131,7 +129,7 @@ uv run pyinstaller --onefile --windowed --name "UnitConverter-Desktop" --add-dat
 # Output: dist/UnitConverter-Desktop
 ```
 
-See [docs/architecture.md](docs/architecture.md) for cross-platform build instructions.
+See [architecture.md](architecture.md) for cross-platform build instructions.
 
 ## Supported Conversions
 

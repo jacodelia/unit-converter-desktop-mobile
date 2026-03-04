@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.i18n.translations import (
+from unitconverter.i18n.translations import (
     TranslationService,
     TRANSLATIONS,
     LANGUAGE_NAMES,

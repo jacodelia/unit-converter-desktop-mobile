@@ -2,12 +2,12 @@
 
 import pytest
 
-from src.services.converter_service import ConverterService
-from src.services.search_service import SearchService
-from src.i18n.translations import TranslationService
-from src.viewmodels.converter_viewmodel import ConverterViewModel
-from src.viewmodels.search_viewmodel import SearchViewModel
-from src.viewmodels.preferences_viewmodel import PreferencesViewModel
+from unitconverter.services.converter_service import ConverterService
+from unitconverter.services.search_service import SearchService
+from unitconverter.i18n.translations import TranslationService
+from unitconverter.viewmodels.converter_viewmodel import ConverterViewModel
+from unitconverter.viewmodels.search_viewmodel import SearchViewModel
+from unitconverter.viewmodels.preferences_viewmodel import PreferencesViewModel
 
 
 @pytest.fixture
@@ -68,7 +68,7 @@ class TestEndToEndConversion:
         _, _, prefs_vm = full_stack
         prefs_vm.set_language("es")
         assert prefs_vm.current_language == "es"
-        from src.i18n.translations import APP_TITLE
+        from unitconverter.i18n.translations import APP_TITLE
 
         assert prefs_vm.get_text(APP_TITLE) == "Conversor de Unidades"
 
@@ -106,7 +106,7 @@ class TestEndToEndConversion:
 
     def test_all_languages_produce_text(self, full_stack) -> None:
         _, _, prefs_vm = full_stack
-        from src.i18n.translations import APP_TITLE, SUPPORTED_LANGUAGES
+        from unitconverter.i18n.translations import APP_TITLE, SUPPORTED_LANGUAGES
 
         for lang in SUPPORTED_LANGUAGES:
             prefs_vm.set_language(lang)

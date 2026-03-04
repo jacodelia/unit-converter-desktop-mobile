@@ -3,12 +3,12 @@
 import pytest
 import math
 
-from src.operations.length_operations import convert_length, LENGTH_UNITS
-from src.operations.temperature_operations import convert_temperature, TEMPERATURE_UNITS
-from src.operations.area_operations import convert_area, AREA_UNITS
-from src.operations.volume_operations import convert_volume, VOLUME_UNITS
-from src.operations.weight_operations import convert_weight, WEIGHT_UNITS
-from src.operations.time_operations import convert_time, TIME_UNITS
+from unitconverter.operations.length_operations import convert_length, LENGTH_UNITS
+from unitconverter.operations.temperature_operations import convert_temperature, TEMPERATURE_UNITS
+from unitconverter.operations.area_operations import convert_area, AREA_UNITS
+from unitconverter.operations.volume_operations import convert_volume, VOLUME_UNITS
+from unitconverter.operations.weight_operations import convert_weight, WEIGHT_UNITS
+from unitconverter.operations.time_operations import convert_time, TIME_UNITS
 
 
 class TestLengthOperations:

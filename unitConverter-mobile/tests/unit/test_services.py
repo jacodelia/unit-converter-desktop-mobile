@@ -2,8 +2,8 @@
 
 import pytest
 
-from src.services.converter_service import ConverterService
-from src.services.search_service import SearchService, SearchResult
+from unitconverter.services.converter_service import ConverterService
+from unitconverter.services.search_service import SearchService, SearchResult
 
 
 class TestConverterService:
@@ -166,13 +166,13 @@ class TestSearchService:
         assert not result.is_conversion_query
 
     def test_search_result_has_results_with_category(self) -> None:
-        from src.models.category import Category
+        from unitconverter.models.category import Category
 
         result = SearchResult(category=Category(id="test", name="Test", icon=""))
         assert result.has_results
 
     def test_search_result_has_results_with_unit(self) -> None:
-        from src.models.unit import Unit
+        from unitconverter.models.unit import Unit
 
         result = SearchResult(from_unit=Unit(id="t", name="T", symbol="t"))
         assert result.has_results

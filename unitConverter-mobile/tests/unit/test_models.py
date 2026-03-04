@@ -3,9 +3,9 @@
 import pytest
 from datetime import datetime
 
-from src.models.unit import Unit
-from src.models.category import Category
-from src.models.conversion_result import ConversionResult
+from unitconverter.models.unit import Unit
+from unitconverter.models.category import Category
+from unitconverter.models.conversion_result import ConversionResult
 
 
 class TestUnit:

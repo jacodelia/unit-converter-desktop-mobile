@@ -59,8 +59,8 @@ Both projects follow the **Model-View-ViewModel** pattern with strict separation
 ## Architecture Diagrams
 
 See the detailed Mermaid diagrams in each project's docs:
-- [Desktop Architecture](./unitConverter-desktop/docs/architecture.md)
-- [Mobile Architecture](./unitConverter-mobile/docs/architecture.md)
+- [Desktop Architecture](./unitConverter-desktop/architecture.md)
+- [Mobile Architecture](./unitConverter-mobile/architecture.md)
 
 ### High-Level MVVM Flow
 
@@ -188,14 +188,16 @@ uv run pytest tests/ -v
 - **Desktop**: 220 tests, 100% pass rate
 - **Mobile**: 218 tests, 100% pass rate
 
-## Building Binary Executables
+## Building
 
 ### Prerequisites
+
 ```bash
-uv sync --dev  # Includes PyInstaller
+uv sync --dev  # Includes PyInstaller and Briefcase
 ```
 
-### Desktop Build
+### Desktop Binary (PyInstaller)
+
 ```bash
 cd unitConverter-desktop
 uv run pyinstaller --onefile --windowed \
@@ -204,22 +206,83 @@ uv run pyinstaller --onefile --windowed \
     main.py
 ```
 
-### Mobile Build
+### Mobile Desktop Binary (PyInstaller)
+
 ```bash
 cd unitConverter-mobile
 uv run pyinstaller --onefile --windowed \
     --name "UnitConverter-Mobile" \
-    --add-data "src:src" \
+    --add-data "unitconverter:unitconverter" \
     main.py
 ```
 
-### Platform-Specific Notes
+### Android APK Build (Briefcase)
 
-| Platform | Output Format | Notes |
-|----------|---------------|-------|
-| Linux | ELF binary | Requires Qt6 runtime libraries |
-| macOS | `.app` bundle | Use `--windowed` to suppress terminal |
-| Windows | `.exe` | Use `--windowed` to suppress console |
+Builds a universal APK that runs on both **phone** and **tablet** devices. The app adapts its layout at runtime.
+
+```bash
+cd unitConverter-mobile
+
+# Create Android project scaffold
+uv run briefcase create android
+
+# Build debug APK
+uv run briefcase build android
+
+# Run on a connected device or emulator
+uv run briefcase run android
+
+# Package signed AAB for Google Play Store
+uv run briefcase package android
+```
+
+**Requirements**: Java JDK 17+, Android SDK (API 34), build-tools 34.0.0
+
+### iOS Build (Briefcase)
+
+Builds a universal iOS app for both **iPhone** and **iPad**. Requires macOS with Xcode.
+
+```bash
+cd unitConverter-mobile
+
+# Create iOS project scaffold (Xcode project)
+uv run briefcase create iOS
+
+# Build debug build
+uv run briefcase build iOS
+
+# Run on iOS Simulator
+uv run briefcase run iOS
+
+# Run on physical device
+uv run briefcase run iOS -d <device-udid>
+
+# Package signed IPA for App Store
+uv run briefcase package iOS
+```
+
+**Requirements**: macOS, Xcode 15+, Apple Developer account (for device/store deployment)
+
+### Full Platform Build Matrix
+
+| Platform | Tool | Command | Output | Devices |
+|----------|------|---------|--------|---------|
+| Linux | PyInstaller | `pyinstaller --onefile main.py` | ELF binary | Desktop |
+| macOS | PyInstaller | `pyinstaller --onefile --windowed main.py` | `.app` bundle | Desktop |
+| Windows | PyInstaller | `pyinstaller --onefile --windowed main.py` | `.exe` | Desktop |
+| Android | Briefcase | `briefcase build android` | `.apk` | Phone + Tablet |
+| Android | Briefcase | `briefcase package android` | `.aab` | Play Store |
+| iOS | Briefcase | `briefcase build iOS` | `.app` | iPhone + iPad (Simulator) |
+| iOS | Briefcase | `briefcase package iOS` | `.ipa` | App Store / TestFlight |
+
+### Mobile Device Support
+
+| Device | Form Factor | Screen | Layout | Min OS |
+|--------|-------------|--------|--------|--------|
+| Android Phone | < 7" | 390x844 | Compact, portrait | Android 8.0 (SDK 26) |
+| Android Tablet | >= 7" | 1024x768 | Expanded, any orient. | Android 8.0 (SDK 26) |
+| iPhone | 4.7"--6.7" | 390x844 | Compact, portrait | iOS 15.0 |
+| iPad | 7.9"--12.9" | 1024x768 | Expanded, multitasking | iOS 15.0 |
 
 ### Recommended PyInstaller Flags
 
@@ -227,7 +290,7 @@ uv run pyinstaller --onefile --windowed \
 --onefile          # Single executable
 --windowed         # No console window (macOS/Windows)
 --name "AppName"   # Output filename
---add-data "src:src"  # Include source package
+--add-data "pkg:pkg"  # Include source package (e.g. "unitconverter:unitconverter")
 --icon icon.ico    # Application icon (optional)
 ```
 

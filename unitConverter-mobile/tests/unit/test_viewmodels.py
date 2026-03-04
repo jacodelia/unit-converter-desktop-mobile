@@ -2,12 +2,12 @@
 
 import pytest
 
-from src.services.converter_service import ConverterService
-from src.services.search_service import SearchService
-from src.i18n.translations import TranslationService, APP_TITLE
-from src.viewmodels.converter_viewmodel import ConverterViewModel
-from src.viewmodels.search_viewmodel import SearchViewModel
-from src.viewmodels.preferences_viewmodel import PreferencesViewModel
+from unitconverter.services.converter_service import ConverterService
+from unitconverter.services.search_service import SearchService
+from unitconverter.i18n.translations import TranslationService, APP_TITLE
+from unitconverter.viewmodels.converter_viewmodel import ConverterViewModel
+from unitconverter.viewmodels.search_viewmodel import SearchViewModel
+from unitconverter.viewmodels.preferences_viewmodel import PreferencesViewModel
 
 
 @pytest.fixture
